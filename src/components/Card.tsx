@@ -19,7 +19,7 @@ export const Card: FC<CardProps> = ({ title, description, id, className }) => {
   const [isClosed, setIsClosed] = useState(true);
 
   return (
-    <div className={`border border-black px-2 py-1.5 w-96 transition-all duration-300 ease-in-out ${className}`}>
+    <div className={`border border-black px-2 py-1.5 w-full transition-all duration-300 ease-in-out ${className}`}>
       <div className="flex justify-between mb-0.5">
         <h1 className="font-medium">{title}</h1>
         {description ? (

@@ -2,13 +2,18 @@ import { FC, useState } from "react";
 import { ListItem } from "../api/getListData";
 import { DeleteButton, ExpandButton } from "./Buttons";
 import { ChevronUpIcon } from "./icons";
+import { useCardStore } from "../store";
+import { removeCard } from "../utils/removeCard";
 
 type CardProps = {
   title: ListItem["title"];
-  description: ListItem["description"];
+  description?: ListItem["description"];
+  id: number;
 };
 
-export const Card: FC<CardProps> = ({ title, description }) => {
+export const Card: FC<CardProps> = ({ title, description, id }) => {
+
+  const { setVisibleCards, visibleCards, setDeletedCard, deletedCards } = useCardStore((state) => state);
 
   const [isClosed, setIsClosed] = useState(true);
 
@@ -20,10 +25,10 @@ export const Card: FC<CardProps> = ({ title, description }) => {
           <ExpandButton onClick={() => setIsClosed(!isClosed)}>
             <ChevronUpIcon />
           </ExpandButton>
-          <DeleteButton />
+          <DeleteButton onClick={() => removeCard(id, setVisibleCards, visibleCards, setDeletedCard, deletedCards)} />
         </div>
       </div>
-      <div className={`text-sm transition-all duration-300 ease-in-out ${isClosed ? "max-h-0 opacity-0" : "max-h-96 opacity-100"}`}>
+      <div className={`text-sm transition-all duration-300 ease-in-out overflow-hidden ${isClosed ? "max-h-0 opacity-0" : "max-h-96 opacity-100"}`}>
         <p>
           {description}
         </p>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ListItem, useGetListData } from "../api/getListData";
-import { Card } from "./List";
+import { Card } from "./Card";
 import { Spinner } from "./Spinner";
 
 export const Entrypoint = () => {
@@ -43,7 +43,7 @@ export const Entrypoint = () => {
           </button>
         </div>
         <div className="flex flex-col gap-y-3">
-          {/* {deletedCards.map((card) => (
+          {/* {deletedCards?.map((card) => (
             <Card key={card.id} card={card} />
           ))} */}
         </div>

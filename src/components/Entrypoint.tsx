@@ -3,6 +3,7 @@ import { useGetListData } from "../api/getListData";
 import { Card } from "./Card";
 import { Spinner } from "./Spinner";
 import { useCardStore } from "../store";
+import { ToggleButton } from "./Buttons";
 
 export const Entrypoint = () => {
 
@@ -41,12 +42,9 @@ export const Entrypoint = () => {
           {/* Header */}
           <h1 className="mb-1 font-medium text-lg">Deleted Cards ({deletedCards?.length})</h1>
           <div className="flex gap-4">
-            <button
-              className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1"
-              onClick={() => setIsRevealed(!isRevealed)}
-            >
+            <ToggleButton state={isRevealed} setState={setIsRevealed} >
               {isRevealed ? "Reveal" : "Hide"}
-            </button>
+            </ToggleButton>
             <button
               disabled
               className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1"

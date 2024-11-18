@@ -4,6 +4,7 @@ import { DeleteButton, ExpandButton } from "./Buttons";
 import { ChevronUpIcon } from "./icons";
 import { useCardStore } from "../store";
 import { removeCard } from "../utils/removeCard";
+import { expandCard } from "../utils/expandCard";
 
 type CardProps = {
   title: ListItem["title"];
@@ -14,9 +15,9 @@ type CardProps = {
 
 export const Card: FC<CardProps> = ({ title, description, id, className }) => {
 
-  const { setVisibleCards, visibleCards, setDeletedCard } = useCardStore((state) => state);
+  const { setVisibleCards, visibleCards, setDeletedCard, setExpandedCards, expandedCards } = useCardStore((state) => state);
 
-  const [isClosed, setIsClosed] = useState(true);
+  const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
   return (
     <div className={`border border-black px-2 py-1.5 w-full transition-all duration-300 ease-in-out ${className}`}>
@@ -24,7 +25,7 @@ export const Card: FC<CardProps> = ({ title, description, id, className }) => {
         <h1 className="font-medium">{title}</h1>
         {description ? (
           <div className="flex">
-            <ExpandButton onClick={() => setIsClosed(!isClosed)}>
+            <ExpandButton onClick={() => expandCard(id, isExpanded, setIsExpanded, setExpandedCards, expandedCards, visibleCards)}>
               <ChevronUpIcon />
             </ExpandButton>
             <DeleteButton onClick={() => removeCard(id, setVisibleCards, visibleCards, setDeletedCard)} />
@@ -32,7 +33,7 @@ export const Card: FC<CardProps> = ({ title, description, id, className }) => {
         ) : ''}
       </div>
       {description ? (
-        <div className={`text-sm transition-all duration-300 ease-in-out overflow-hidden ${isClosed ? "max-h-0 opacity-0" : "max-h-96 opacity-100"}`}>
+        <div className={`text-sm transition-all duration-300 ease-in-out overflow-hidden ${isExpanded ? "max-h-0 opacity-0" : "max-h-96 opacity-100"}`}>
           <p>
             {description}
           </p>

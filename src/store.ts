@@ -4,20 +4,22 @@ import { ListItem } from "./api/getListData";
 type State = {
   visibleCards: ListItem[];
   deletedCards: ListItem[];
+  expandedCards: ListItem[];
   isRevealed: boolean;
 };
 
 type Actions = {
   setVisibleCards: (cards: ListItem[]) => void;
   setDeletedCard: (id: number) => void;
+  setExpandedCards: (cards: ListItem[]) => void;
   setIsRevealed: (isRevealed: boolean) => void;
 };
 
 export const useCardStore = create<State & Actions>((set) => ({
   visibleCards: [],
   deletedCards: [],
+  expandedCards: [],
   isRevealed: false,
-  setIsRevealed: (isRevealed) => set({ isRevealed }),
   setVisibleCards: (cards) => set({ visibleCards: cards }),
   setDeletedCard: (id) =>
     set((state) => ({
@@ -26,4 +28,6 @@ export const useCardStore = create<State & Actions>((set) => ({
         state.visibleCards.find((card) => card.id === id) as ListItem,
       ],
     })),
+  setExpandedCards: (cards) => set({ expandedCards: cards }),
+  setIsRevealed: (isRevealed) => set({ isRevealed }),
 }));

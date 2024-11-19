@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGetListData } from "../api/getListData";
 import { Card } from "./Card";
 import { Spinner } from "./Spinner";
@@ -8,28 +8,37 @@ import { ToggleButton } from "./Buttons";
 export const Entrypoint = () => {
 
   const { visibleCards, setVisibleCards, deletedCards, setIsRevealed, isRevealed, expandedCards } = useCardStore((state) => state);
-
+  const [isLoading, setIsLoading] = useState(false);
   const listQuery = useGetListData();
 
   useEffect(() => {
     if (listQuery.data && !listQuery.isLoading && !listQuery.isError) {
-      if (expandedCards.length === 0) {
-        setVisibleCards(listQuery.data?.filter((item) => item.isVisible) ?? []);
-        return
-      }
+      const exclusionSet = new Set([
+        ...expandedCards.map((card) => card.id),
+        ...deletedCards.map((card) => card.id),
+      ]);
+
       const newData = listQuery.data
         ?.filter((item) => item.isVisible)
-        .filter((item) => !expandedCards.find((card) => card.id === item.id))
-      newData.unshift(...expandedCards);
+        .filter((item) => !exclusionSet.has(item.id));
+
+      if (expandedCards.length > 0) {
+        newData.unshift(...expandedCards);
+      }
+
       setVisibleCards(newData);
     }
-
   }, [listQuery.data, listQuery.isLoading]);
 
   if (listQuery.isLoading) {
     return <Spinner />;
   }
 
+  const refetch = () => {
+    listQuery.refetch();
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 1000);
+  }
   return (
     <div className="flex w-3/4 px-32 transition-all duration-300 ease-in-out">
       {/* Left panel */}
@@ -53,8 +62,9 @@ export const Entrypoint = () => {
               {isRevealed ? "Hide" : "Reveal"}
             </ToggleButton>
             <button
-              onClick={() => listQuery.refetch()}
-              className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1"
+              onClick={() => refetch()}
+              disabled={isLoading}
+              className={`text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1}`}
             >
               Refresh
             </button>

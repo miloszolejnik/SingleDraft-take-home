@@ -10,23 +10,31 @@ export type ListItem = {
 
 export type DeletedListItem = Omit<ListItem, "description">;
 
+/**
+ * Fetches the list of cards from a mock API.
+ *
+ * Returns a list of items with an additional "isVisible" property.
+ *
+ * @returns {UseQueryResult<ListItem[]>}
+ */
 export const useGetListData = () => {
   const query = useQuery({
     queryKey: ["list"],
     queryFn: async () => {
       await sleep(1000);
-      //
-      // Not sure if this is part of the refactor that is expected
-      // Let me know if I was supposed to delete that
-      //
-      // if (getRandom() > 85) {
-      //   console.error("An unexpected error occurred!");
-      //   throw new Error("👀");
-      // }
+
+      /**
+        Not sure if this is part of the refactor that is expected
+        Let me know if I was supposed to delete that
+      
+        if (getRandom() > 85) {
+          console.error("An unexpected error occurred!");
+          throw new Error("👀");
+      */
 
       const mockData = mockJson as Omit<ListItem, "isVisible">[];
 
-      return shuffle(mockData).map((item) => {
+      return shuffleArray(mockData).map((item) => {
         return { ...item, isVisible: getRandom() > 50 ? true : false };
       });
     },
@@ -41,13 +49,13 @@ const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const shuffle = <T extends any[]>(array: T): T => {
-  for (let i = array.length - 1; i >= 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    const temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
+const shuffleArray = <T>(array: T[]): T[] => {
+  for (let currentIndex = array.length - 1; currentIndex >= 0; currentIndex--) {
+    const randomIndex = Math.floor(Math.random() * (currentIndex + 1));
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
   return array;
 };

@@ -50,7 +50,7 @@ export const Entrypoint = () => {
           <h1 className="mb-1 font-medium text-lg">Deleted Cards ({deletedCards?.length})</h1>
           <div className="flex gap-4">
             <ToggleButton state={isRevealed} setState={setIsRevealed} >
-              {isRevealed ? "Reveal" : "Hide"}
+              {isRevealed ? "Hide" : "Reveal"}
             </ToggleButton>
             <button
               onClick={() => listQuery.refetch()}

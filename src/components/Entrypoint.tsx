@@ -7,14 +7,21 @@ import { ToggleButton } from "./Buttons";
 
 export const Entrypoint = () => {
 
-  const { visibleCards, setVisibleCards, deletedCards, setIsRevealed, isRevealed } = useCardStore((state) => state);
+  const { visibleCards, setVisibleCards, deletedCards, setIsRevealed, isRevealed, expandedCards } = useCardStore((state) => state);
 
   const listQuery = useGetListData();
 
-
   useEffect(() => {
     if (listQuery.data && !listQuery.isLoading && !listQuery.isError) {
-      setVisibleCards(listQuery.data?.filter((item) => item.isVisible) ?? []);
+      if (expandedCards.length === 0) {
+        setVisibleCards(listQuery.data?.filter((item) => item.isVisible) ?? []);
+        return
+      }
+      const newData = listQuery.data
+        ?.filter((item) => item.isVisible)
+        .filter((item) => !expandedCards.find((card) => card.id === item.id))
+      newData.unshift(...expandedCards);
+      setVisibleCards(newData);
     }
 
   }, [listQuery.data, listQuery.isLoading]);
@@ -24,7 +31,7 @@ export const Entrypoint = () => {
   }
 
   return (
-    <div className="flex w-full px-32 transition-all duration-300 ease-in-out">
+    <div className="flex w-3/4 px-32 transition-all duration-300 ease-in-out">
       {/* Left panel */}
       <div className="w-1/2 px-8">
         {/* Header */}
@@ -46,7 +53,7 @@ export const Entrypoint = () => {
               {isRevealed ? "Reveal" : "Hide"}
             </ToggleButton>
             <button
-              disabled
+              onClick={() => listQuery.refetch()}
               className="text-white text-sm transition-colors hover:bg-gray-800 disabled:bg-black/75 bg-black rounded px-3 py-1"
             >
               Refresh

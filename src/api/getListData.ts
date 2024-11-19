@@ -15,11 +15,14 @@ export const useGetListData = () => {
     queryKey: ["list"],
     queryFn: async () => {
       await sleep(1000);
-
-      if (getRandom() > 85) {
-        console.error("An unexpected error occurred!");
-        throw new Error("👀");
-      }
+      //
+      // Not sure if this is part of the refactor that is expected
+      // Let me know if I was supposed to delete that
+      //
+      // if (getRandom() > 85) {
+      //   console.error("An unexpected error occurred!");
+      //   throw new Error("👀");
+      // }
 
       const mockData = mockJson as Omit<ListItem, "isVisible">[];
 

@@ -21,11 +21,11 @@
 
 - cards by default should be collapsed ✅
 - expanded/deleted cards' state needs to be persisted after "refreshing" (regardless of isVisible property) ✅
-- "refresh" functionality needs to be implemented using `react-query`
+- "refresh" functionality needs to be implemented using `react-query` ✅
 
 ### Miscellaneous
 
-- add a "Refresh" button (just like the "Reveal" button)
+- add a "Refresh" button (just like the "Reveal" button) ✅
 - create generic `<ToggleButton />` ✅
 
 ### Additional

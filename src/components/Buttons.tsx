@@ -26,6 +26,6 @@ export const DeleteButton: FC<Omit<ButtonProps, "children">> = (props) => {
 
 export const ToggleButton: FC<ToggleButtonProps> = ({ state, setState, children, ...props }) => {
   return (
-    <button className="font-bold hover:text-gray-700 transition-colors flex items-center justify-center" {...props} onClick={() => setState(!state)} >{children}</button>
+    <button className="font-semibold hover:text-gray-700 transition-colors flex items-center justify-center" {...props} onClick={() => setState(!state)} >{children}</button>
   );
 };
